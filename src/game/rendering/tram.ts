@@ -3,10 +3,10 @@ import { AssetLibrary, Batch } from "./library";
 export function createTram(assets: AssetLibrary): THREE.Group {
   const b = new Batch(assets);
   b.add("box", "#54665c", 0, 0.52, 0, 2.15, 0.5, 5.4);
-  b.add("box", "#c58235", 0, 1.25, 0, 2.25, 1.15, 5.55);
-  b.add("box", "#e9b54f", 0, 1.8, 0, 2.3, 0.9, 5.65);
-  b.add("box", "#f4e4bd", 0, 3.34, 0, 2.4, 0.23, 5.8);
-  b.add("box", "#64796a", 0, 3.55, 0, 2.55, 0.22, 5.9);
+  b.add("softbox", "#d79d36", 0, 1.25, 0, 2.25, 1.15, 5.55);
+  b.add("softbox", "#f0bb50", 0, 1.8, 0, 2.3, 0.9, 5.65);
+  b.add("softbox", "#f4e4bd", 0, 3.34, 0, 2.4, 0.23, 5.8);
+  b.add("softbox", "#64796a", 0, 3.55, 0, 2.55, 0.22, 5.9);
   b.add("box", "#f4e4bd", 0, 2.65, 0, 2.25, 1.45, 5.45);
   for (const side of [-1, 1]) {
     for (let i = 0; i < 5; i++) {
@@ -31,7 +31,7 @@ export function createTram(assets: AssetLibrary): THREE.Group {
       );
   }
   for (const end of [-1, 1]) {
-    b.add("box", "#e9b54f", 0, 1.6, end * 2.84, 2.3, 1.3, 0.2);
+    b.add("softbox", "#f0bb50", 0, 1.6, end * 2.84, 2.3, 1.3, 0.2);
     for (const x of [-0.72, 0, 0.72]) {
       b.add("box", "#688d88", x, 2.64, end * 2.74, 0.58, 1.12, 0.06);
       b.add("box", "#d4a04c", x + 0.34, 2.65, end * 2.8, 0.07, 1.35, 0.1);

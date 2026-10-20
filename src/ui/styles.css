@@ -949,3 +949,273 @@ select,
     top: 15px;
   }
 }
+/* V0.2: give the scenery the screen; expand journey details only on request. */
+.world::after {
+  background: linear-gradient(
+    180deg,
+    #dce9de22,
+    transparent 16%,
+    transparent 82%,
+    #bacdac36
+  );
+}
+.paper-grain {
+  opacity: 0.075;
+}
+.topbar {
+  top: 20px;
+  left: 24px;
+  right: 24px;
+}
+.brand {
+  background: #f5f0e3dd;
+  padding: 7px 11px 8px 7px;
+}
+.wordmark {
+  font-size: 34px;
+}
+.brand-tagline {
+  font-size: 6px;
+  letter-spacing: 2px;
+}
+.brand-mark {
+  height: 40px;
+  width: 35px;
+}
+.journey-badge {
+  display: none;
+}
+.route-card {
+  top: 104px;
+  left: 26px;
+  padding: 9px 14px;
+  border-radius: 20px;
+  background: #f5f0e3df;
+  max-width: 290px;
+}
+.route-card h1 {
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+.route-card p,
+.route-card > .eyebrow,
+.route-card .route-meta {
+  display: none;
+}
+.world-label,
+.journey-note,
+.journey-stats,
+.control-caption {
+  display: none;
+}
+.bottom-ui {
+  justify-content: center;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+}
+.control-area {
+  width: 450px;
+  margin: 0;
+}
+.control-dock {
+  padding: 10px 14px;
+  gap: 14px;
+  border-radius: 17px;
+  background: #f6f1e3ed;
+}
+.speed-control {
+  width: 158px;
+}
+.throttle input {
+  width: 98px;
+}
+.speed-readout strong {
+  font-size: 29px;
+}
+.play-button {
+  width: 39px;
+  height: 39px;
+}
+.speed-readout > span {
+  font-size: 9px;
+}
+.dock-divider {
+  height: 32px;
+}
+.camera-button {
+  font-size: 8px;
+  min-width: 57px;
+}
+.keyboard-hints {
+  margin-top: 10px;
+  gap: 13px;
+  color: #364c3c;
+  text-shadow: 0 1px 5px #f3eace;
+}
+.keyboard-hints kbd {
+  background: #f4eddbad;
+}
+.keyboard-hints button {
+  font-size: 8px;
+  background: #f5efdebb;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+.details-expanded .route-card {
+  padding: 18px 20px;
+  border-radius: 12px;
+  max-width: 300px;
+}
+.details-expanded .route-card h1 {
+  font-size: 25px;
+  margin: 10px 0;
+}
+.details-expanded .route-card p,
+.details-expanded .route-card > .eyebrow,
+.details-expanded .route-card .route-meta {
+  display: block;
+}
+.details-expanded .route-card .route-meta {
+  display: flex;
+}
+.details-expanded .journey-stats {
+  display: block;
+  position: absolute;
+  bottom: 27px;
+  left: 15px;
+}
+.details-expanded .world-label {
+  display: flex;
+  bottom: 140px;
+}
+.details-expanded .journey-note {
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+}
+.camera-adjustments label {
+  font-size: 10px;
+  margin: 11px 0 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.camera-adjustments label span {
+  color: #829175;
+  font-weight: 400;
+}
+.camera-adjustments input {
+  width: 100%;
+  accent-color: #6c815f;
+  height: 4px;
+}
+.district-options {
+  display: flex;
+  gap: 7px;
+}
+.district-options button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  border: 1px solid #cbd3bd;
+  border-radius: 7px;
+  padding: 10px;
+  font-size: 10px;
+  background: #e7ebdc;
+}
+.settings-dialog {
+  width: 450px;
+}
+.settings-content {
+  padding-top: 20px;
+  padding-bottom: 23px;
+}
+.settings-content h2 {
+  font-size: 28px;
+  margin-top: 8px;
+}
+.dialog-intro {
+  margin-bottom: 20px;
+}
+.settings-content fieldset {
+  margin-bottom: 20px;
+}
+.return-button {
+  margin-top: 20px;
+}
+.guide,
+.toast {
+  bottom: 143px;
+}
+.world canvas {
+  cursor: grab;
+}
+.world canvas:active {
+  cursor: grabbing;
+}
+@media (max-width: 760px) {
+  .topbar {
+    top: 16px;
+    left: 15px;
+    right: 15px;
+  }
+  .route-card {
+    top: 95px;
+    left: 17px;
+    padding: 8px 12px;
+  }
+  .route-card h1 {
+    font-size: 17px;
+  }
+  .control-area {
+    width: 100%;
+    max-width: 450px;
+  }
+  .control-dock {
+    gap: 9px;
+    padding: 10px 12px;
+  }
+  .speed-control {
+    width: 145px;
+  }
+  .throttle input {
+    width: 85px;
+  }
+  .play-button {
+    width: 35px;
+    height: 35px;
+  }
+  .keyboard-hints {
+    gap: 9px;
+  }
+  .keyboard-hints > span:first-child {
+    display: none;
+  }
+  .details-expanded .journey-stats {
+    bottom: 135px;
+    left: 4px;
+  }
+  .details-expanded .world-label {
+    bottom: 145px;
+  }
+  .details-expanded .journey-note {
+    display: none;
+  }
+  .details-expanded .route-card {
+    max-width: 280px;
+  }
+  .brand-tagline {
+    font-size: 6px;
+  }
+  .wordmark {
+    font-size: 31px;
+  }
+  .brand-mark {
+    height: 36px;
+    width: 30px;
+  }
+}

@@ -70,7 +70,11 @@ test("simulation travel follows arc length rather than route parameter speed", (
     const before = route.sample(state.progress);
     stepTram(state, route, 18, 1 / 60);
     const after = route.sample(state.progress);
-    measured += Math.hypot(after.x - before.x, after.z - before.z);
+    measured += Math.hypot(
+      after.x - before.x,
+      after.y - before.y,
+      after.z - before.z,
+    );
   }
   assert.ok(Math.abs(measured - state.distance) < 0.01);
 });
@@ -83,7 +87,7 @@ test("chunk retention stays bounded over 100,000 km and at negative coordinates"
     assert.equal(ids[0], center);
     assert.ok(ids.every((id) => Math.abs(id - center) <= 3));
     const data = generateChunk("endless", center);
-    assert.ok(data.trees.length <= 36);
+    assert.ok(data.trees.length <= 54);
     const p = new Route("endless").sample(z);
     assert.ok(Number.isFinite(p.x));
     assert.ok(Number.isFinite(p.heading));

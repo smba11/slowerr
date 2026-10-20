@@ -14,6 +14,12 @@ function initialSettings(): Settings {
       quality: ["low", "balanced", "high"].includes(saved.quality)
         ? saved.quality
         : "balanced",
+      followDistance: Number.isFinite(saved.followDistance)
+        ? Math.max(12, Math.min(34, saved.followDistance))
+        : DEFAULT_SETTINGS.followDistance,
+      followHeight: Number.isFinite(saved.followHeight)
+        ? Math.max(4, Math.min(18, saved.followHeight))
+        : DEFAULT_SETTINGS.followHeight,
     };
   } catch {
     return { ...DEFAULT_SETTINGS };
@@ -23,6 +29,7 @@ const CAMERA_NAMES = {
   follow: "Follow",
   cinematic: "Cinematic",
   cab: "Driver’s seat",
+  free: "Free look",
 };
 export function App() {
   const host = useRef<HTMLDivElement>(null);
@@ -48,6 +55,7 @@ export function App() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [help, setHelp] = useState(false);
+  const [details, setDetails] = useState(false);
   const bootSettings = useRef(settings);
   useEffect(() => {
     if (!host.current) return;
@@ -59,6 +67,9 @@ export function App() {
         bootSettings.current,
         setTelemetry,
         setError,
+        new URLSearchParams(location.search).has("at")
+          ? Number(new URLSearchParams(location.search).get("at"))
+          : 12,
       );
     } catch (e) {
       queueMicrotask(() => {
@@ -82,7 +93,11 @@ export function App() {
     try {
       localStorage.setItem(
         "slowerr:settings:v1",
-        JSON.stringify({ quality: settings.quality }),
+        JSON.stringify({
+          quality: settings.quality,
+          followDistance: settings.followDistance,
+          followHeight: settings.followHeight,
+        }),
       );
     } catch {
       /* Private browsing can deny storage. */
@@ -127,7 +142,10 @@ export function App() {
       if (key === "c")
         setSettings((s) => ({
           ...s,
-          camera: CAMERA_MODES[(CAMERA_MODES.indexOf(s.camera) + 1) % 3],
+          camera:
+            CAMERA_MODES[
+              (CAMERA_MODES.indexOf(s.camera) + 1) % CAMERA_MODES.length
+            ],
         }));
       if (key === "h") setHidden((v) => !v);
       if (key === "b")
@@ -166,11 +184,15 @@ export function App() {
   const cycleCamera = () =>
     setSettings((s) => ({
       ...s,
-      camera: CAMERA_MODES[(CAMERA_MODES.indexOf(s.camera) + 1) % 3],
+      camera:
+        CAMERA_MODES[
+          (CAMERA_MODES.indexOf(s.camera) + 1) % CAMERA_MODES.length
+        ],
     }));
   const share = async () => {
     const url = new URL(location.href);
     url.searchParams.set("seed", seed);
+    url.searchParams.set("at", String(Math.round(telemetry.progress ?? 12)));
     try {
       await navigator.clipboard.writeText(url.href);
       setNotice("Journey link copied. Same seed, same little world.");
@@ -179,7 +201,7 @@ export function App() {
     }
   };
   return (
-    <main className="experience">
+    <main className={`experience ${details ? "details-expanded" : ""}`}>
       <div className="world" ref={host} />
       <div className="paper-grain" />
       {!hidden && (
@@ -388,6 +410,12 @@ export function App() {
                   {" "}
                   {help ? "Close guide" : "A small guide"} <span>?</span>
                 </button>
+                <button
+                  aria-pressed={details}
+                  onClick={() => setDetails((value) => !value)}
+                >
+                  {details ? "Less on screen" : "Journey details"}
+                </button>
               </div>
             </div>
             <div className="journey-note">
@@ -397,7 +425,7 @@ export function App() {
                 <br />
                 have no destination.
               </span>
-              <span className="version">V0.1 · MADE FOR WANDERING</span>
+              <span className="version">V0.2 · MADE FOR WANDERING</span>
             </div>
           </section>
           {help && (
@@ -414,7 +442,9 @@ export function App() {
               <p>
                 Your tram follows the rails. Choose your pace with the slider or
                 hold W / S. Space pauses the world; C changes the view; B rings
-                the bell; H hides the interface.
+                the bell; H hides the interface. Drag the scenery to look
+                around, scroll to zoom, and double-click to recenter. Your tram
+                cruises automatically; the rails take care of steering.
               </p>
               <p>
                 There’s no finish line. Change the seed in Settings to discover
@@ -494,8 +524,72 @@ export function App() {
               ))}
             </div>
             <p className="field-note">
-              {telemetry.fps} fps · {telemetry.chunks} nearby town sections ·{" "}
+              {telemetry.fps} fps · {telemetry.frameMs ?? "—"} ms per frame ·{" "}
               {settings.quality === "low" ? "Shadows off" : "Soft shadows"}
+            </p>
+          </fieldset>
+          <fieldset className="camera-adjustments">
+            <legend>Settle into the view</legend>
+            <label htmlFor="camera-distance">
+              Follow distance <span>{settings.followDistance} m</span>
+            </label>
+            <input
+              id="camera-distance"
+              type="range"
+              min="12"
+              max="34"
+              value={settings.followDistance}
+              onChange={(e) =>
+                setSettings((s) => ({
+                  ...s,
+                  followDistance: Number(e.target.value),
+                }))
+              }
+            />
+            <label htmlFor="camera-height">
+              Camera height <span>{settings.followHeight} m</span>
+            </label>
+            <input
+              id="camera-height"
+              type="range"
+              min="4"
+              max="18"
+              value={settings.followHeight}
+              onChange={(e) =>
+                setSettings((s) => ({
+                  ...s,
+                  followHeight: Number(e.target.value),
+                }))
+              }
+            />
+            <p className="field-note">
+              Drag to look around · scroll to zoom · double-click to recenter.
+            </p>
+          </fieldset>
+          <fieldset>
+            <legend>A change of scenery</legend>
+            <div className="district-options">
+              {[
+                ["Marigold", 12],
+                ["Willow", 490],
+                ["Azure", 920],
+              ].map(([name, at]) => (
+                <button
+                  key={name}
+                  onClick={() => {
+                    const url = new URL(location.href);
+                    url.searchParams.set("seed", seed);
+                    url.searchParams.set("at", String(at));
+                    location.assign(url.href);
+                  }}
+                >
+                  {name} <Icon name="arrow" size={12} />
+                </button>
+              ))}
+            </div>
+            <p className="field-note">
+              Jump to a district, or keep cruising to discover each along the
+              line.
             </p>
           </fieldset>
           <fieldset>
@@ -524,6 +618,7 @@ export function App() {
               if (next) {
                 const url = new URL(location.href);
                 url.searchParams.set("seed", next);
+                url.searchParams.delete("at");
                 location.assign(url.href);
               }
             }}
