@@ -4,6 +4,8 @@
 
 [Play Slowerr](https://slowerr.vercel.app/) · [Verification notes](VERIFICATION.md)
 
+V0.2 is under review on `feat/v02-world-experience`; the production link above remains the stable V0 release. The overhaul adds three blended landscapes, graded track, varied town architecture, gardens, canals/bridges, free-look, compact HUD and GPU buffer recycling. See the [V0.2 audit](docs/V02_AUDIT.md) and [verification](docs/V02_VERIFICATION.md).
+
 ## Run
 
 Requires Node.js 22.12+ (Node 24 recommended).
@@ -24,17 +26,20 @@ npm run preview
 
 ## Controls
 
-| Control          | Action                                 |
-| ---------------- | -------------------------------------- |
-| W / Up, S / Down | Hold to adjust cruise speed            |
-| Slider / − / +   | Set target speed, 0–36 km/h            |
-| Space            | Pause / resume                         |
-| C                | Cycle follow, cinematic, driver’s seat |
-| B                | Ring bell (locally synthesized audio)  |
-| H                | Hide / show interface                  |
-| Settings         | Graphics, camera, world seed           |
+| Control              | Action                                            |
+| -------------------- | ------------------------------------------------- |
+| W / Up, S / Down     | Hold to adjust cruise speed                       |
+| Slider / − / +       | Set target speed, 0–36 km/h                       |
+| Space                | Pause / resume                                    |
+| C                    | Cycle follow, cinematic, driver’s seat, free look |
+| Drag scenery         | Look around / orbit                               |
+| Mouse wheel          | Zoom                                              |
+| Double-click scenery | Recenter camera                                   |
+| B                    | Ring bell (locally synthesized audio)             |
+| H                    | Hide / show interface                             |
+| Settings             | Graphics, camera, world seed                      |
 
-Settings pause the simulation while open. Hidden tabs suspend travel. Braking to zero differs from pause: the tram decelerates smoothly. Seed links reproduce scenery, not journey progress. Graphics preference is stored locally; there are no accounts or cookies.
+Settings pause the simulation while open. Hidden tabs suspend travel. Braking to zero differs from pause: the tram decelerates smoothly. Seed links reproduce scenery at the shared route position, restarting journey time. Graphics and follow-camera preferences are stored locally; there are no accounts or cookies. Settings can jump to Marigold, Willow or Azure; uninterrupted cruising passes through all three. Journey details expands the compact HUD, and H hides it.
 
 ## Project map
 
@@ -45,7 +50,7 @@ src/
     simulation/              # pure RNG, route and tram movement
     world/                   # seeded town descriptors and chunk planner
     rendering/               # shared assets, instanced town and tram
-    camera/                  # three damped camera views
+    camera/                  # four damped views, free-look and zoom
     environment/             # sky, fog, sunlight, hills and clouds
     performance/             # graphics presets and simulation budgets
   ui/                        # React HUD, settings, icons and styling
@@ -58,6 +63,6 @@ Read [GAME_DESIGN.md](GAME_DESIGN.md), [ARCHITECTURE.md](ARCHITECTURE.md), and [
 
 Import `smba11/slowerr` into the existing Vercel project. Use repository root, Vite framework preset, `npm run build`, and `dist` output. `vercel.json` includes those settings. No environment variables or integrations are required. Deploy a feature branch as a preview; promote a validated milestone to `main` for production. The static build is also compatible with other static hosts.
 
-## V0 limits
+## V0.2 limits
 
-Desktop WebGL2 is the target. Touch-accessible HUD controls exist, but mobile GPU performance has not been certified. Art is procedural low-poly geometry with a warm illustrated palette, not a full hand-painted asset pipeline. There is one town biome and a decorative canal; stations, bridges, weather, pedestrians and day/night are future milestones. Physics is deterministic at fixed steps; visual frame timing depends on the browser and GPU. Very long travel uses a floating origin for rendering; JavaScript floating-point limits still apply at astronomical distances.
+Desktop WebGL2 is the target. Touch-accessible controls exist, but mobile GPU performance has not been certified. Art is procedural 3D with an illustrated palette and brush-textured stucco, not a full hand-painted asset pipeline. V0.2 has three district grammars, decorative canals and stone bridges; stations, weather, pedestrians and day/night remain future milestones. Physics is deterministic at fixed steps; visual frame timing depends on the browser/GPU. Very long travel uses a floating origin; JavaScript floating-point limits still apply at astronomical distances.

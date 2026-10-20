@@ -25,13 +25,14 @@ test("rendered road seams meet and retiring chunks release only owned resources"
     route = new Route("seams");
   const a = renderChunk(generateChunk("seams", 0), route, assets),
     b = renderChunk(generateChunk("seams", 1), route, assets);
-  const roadA = a.children[2] as THREE.Mesh,
-    roadB = b.children[2] as THREE.Mesh;
+  const roadA = a.getObjectByName("road") as THREE.Mesh,
+    roadB = b.getObjectByName("road") as THREE.Mesh;
   const posA = roadA.geometry.getAttribute("position"),
     posB = roadB.geometry.getAttribute("position");
   for (let edge = 0; edge < 2; edge++) {
     const i = posA.count - 2 + edge;
     assert.ok(Math.abs(posA.getX(i) - posB.getX(edge)) < 1e-4);
+    assert.ok(Math.abs(posA.getY(i) - posB.getY(edge)) < 1e-4);
     assert.ok(Math.abs(posA.getZ(i) - posB.getZ(edge) - CHUNK_LENGTH) < 1e-4);
   }
   let batches = 0,
@@ -40,12 +41,12 @@ test("rendered road seams meet and retiring chunks release only owned resources"
   a.traverse((o) => {
     if (o instanceof THREE.InstancedMesh) {
       batches++;
-      assert.equal(o.instanceColor?.count, o.count);
+      assert.ok((o.instanceColor?.count ?? 0) >= o.count);
     }
   });
   assert.ok(
-    batches <= 5,
-    `expected at most five geometry batches, got ${batches}`,
+    batches <= 15,
+    `expected at most fifteen geometry batches including detail LOD, got ${batches}`,
   );
   roadA.geometry.addEventListener("dispose", () => {
     ownedDisposed = true;

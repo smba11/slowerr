@@ -11,28 +11,28 @@ export const PRESETS: Record<
   }
 > = {
   low: {
-    radius: 2,
+    radius: 3,
     pixelRatio: 1,
     shadows: false,
     shadowSize: 512,
-    fogNear: 65,
-    fogFar: 130,
+    fogNear: 125,
+    fogFar: 200,
   },
   balanced: {
-    radius: 3,
+    radius: 4,
     pixelRatio: 1.5,
     shadows: true,
     shadowSize: 1024,
-    fogNear: 95,
-    fogFar: 190,
+    fogNear: 190,
+    fogFar: 285,
   },
   high: {
-    radius: 4,
+    radius: 5,
     pixelRatio: 2,
     shadows: true,
     shadowSize: 2048,
-    fogNear: 130,
-    fogFar: 260,
+    fogNear: 245,
+    fogFar: 355,
   },
 };
 export const FIXED_STEP = 1 / 60;
