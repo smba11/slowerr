@@ -13,7 +13,7 @@
 
 Validation details and limits: [VERIFICATION.md](VERIFICATION.md).
 
-## V0.2 — world and experience overhaul (verification)
+## V0.2 — world and experience overhaul (review preview)
 
 - [x] Audit V0 and preserve its shell, branding, controls and hosting
 - [x] Nonperiodic 3D track, grade limits, pitch alignment and interpolated motion
@@ -22,9 +22,10 @@ Validation details and limits: [VERIFICATION.md](VERIFICATION.md).
 - [x] Marigold architecture/gardens benchmark and reusable art grammars
 - [x] Willow countryside, Azure canals and stone bridges
 - [x] Bounded buffer recycling, detail LOD and real-time diagnostics
-- [x] Expanded 16-test suite, lint and production build
-- [ ] Final browser controls/visual checks and uninterrupted travel measurement
-- [ ] Feature preview for review; stable production unchanged
+- [x] Expanded 17-test suite, including 600 simulated seconds of streaming; lint/build
+- [x] Browser visuals/control checks and before/after captures
+- [x] Feature preview and draft PR for review; stable production unchanged
+- [ ] Clean ten-minute rendered endurance run: embedded browser host suspends tabs
 
 V0.2 [audit](docs/V02_AUDIT.md) and [verification](docs/V02_VERIFICATION.md). Do not begin V0.3 before the user reviews the core world, movement and visual benchmark.
 

@@ -13,6 +13,8 @@ import { generateChunk } from "../src/game/world/chunks";
 import { terrainGeometry } from "../src/game/rendering/terrain";
 import { AssetLibrary } from "../src/game/rendering/library";
 import { renderChunk, disposeChunk } from "../src/game/rendering/town";
+import { createTramState, stepTram } from "../src/game/simulation/tram";
+import { requiredChunks, CHUNK_LENGTH } from "../src/game/world/chunks";
 
 test("noise derivatives match finite differences and remain continuous at lattice edges", () => {
   for (const x of [-10, -0.2, 0, 0.48, 0.9999, 1, 200.27]) {
@@ -127,4 +129,50 @@ test("building silhouettes and planting vary while descriptors reproduce out of 
   assert.equal(roofs.size, 4);
   assert.equal(species.size, 4);
   assert.ok(widths.size > 100);
+});
+
+test("600 seconds of cruising crosses all districts with bounded complete chunk coverage", () => {
+  const route = new Route("amberline"),
+    assets = new AssetLibrary(),
+    state = createTramState();
+  const active = new Map<number, THREE.Group>(),
+    visited = new Set<string>();
+  let previousCenter = Infinity,
+    retired = 0;
+  for (let step = 0; step < 36000; step++) {
+    stepTram(state, route, 18, 1 / 60);
+    const center = Math.floor(state.progress / CHUNK_LENGTH);
+    if (center !== previousCenter) {
+      const needed = requiredChunks(state.progress, 4),
+        keep = new Set(needed);
+      for (const [id, chunk] of active)
+        if (!keep.has(id)) {
+          disposeChunk(chunk, assets);
+          active.delete(id);
+          retired++;
+        }
+      for (const id of needed)
+        if (!active.has(id))
+          active.set(
+            id,
+            renderChunk(generateChunk(route.seed, id), route, assets),
+          );
+      assert.equal(active.size, 9);
+      assert.ok(
+        active.has(center - 1) && active.has(center) && active.has(center + 1),
+      );
+      assert.ok(assets.pool.size <= 18);
+      visited.add(geographyAt(state.progress).name);
+      previousCenter = center;
+    }
+    assert.ok(Number.isFinite(state.progress));
+    assert.ok(Math.abs(route.sample(state.progress).pitch) < 0.05);
+  }
+  assert.ok(state.elapsed > 599.99);
+  assert.ok(state.distance > 2980);
+  assert.equal(visited.size, 3);
+  assert.ok(retired > 30);
+  assert.ok(assets.pool.reused > 100);
+  active.forEach((chunk) => disposeChunk(chunk, assets));
+  assets.dispose();
 });
