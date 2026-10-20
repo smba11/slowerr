@@ -2,6 +2,8 @@
 
 Verified October 20, 2026 on Node 24.14 and the Codex desktop in-app Chromium browser, using the production build served by `vite preview` at 1280 × 720.
 
+The linked Vercel project completed a production build with state READY for the V0 implementation commit `61432b5`. The deployed page at https://slowerr.vercel.app/ was also opened successfully in the browser: the game UI and 3D canvas initialized and the tram accelerated from rest. The GitHub default branch is `main`; the feature milestone is also retained on `feat/v0-tram-journey`.
+
 ## Automated checks
 
 - `npm run lint`: passes, no warnings.

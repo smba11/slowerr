@@ -2,6 +2,8 @@
 
 **Take the scenic route.** A playable, endless procedural tram journey. Vite + React + TypeScript + Three.js. Runs entirely in the browser, with no API keys, database, backend, paid APIs, external assets, or runtime network services.
 
+[Play Slowerr](https://slowerr.vercel.app/) · [Verification notes](VERIFICATION.md)
+
 ## Run
 
 Requires Node.js 22.12+ (Node 24 recommended).
