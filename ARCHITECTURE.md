@@ -16,6 +16,6 @@ The route is an analytic seeded sum of smooth waves. Sampled tangents align the 
 
 Chunks cover 72 route meters. The current chunk and its immediate neighbors are ready before travel; farther chunks are generated one per frame. Missing chunks are prioritized by proximity. Retired chunks dispose their unique road geometry and instance buffers; shared geometry/materials survive until shutdown. A floating origin aligned to the current chunk keeps GPU coordinates small during long travel.
 
-Scenery uses per-chunk InstancedMesh batches keyed by geometry/material with shared primitives. Fog hides streaming boundaries. Graphics presets change draw distance, pixel ratio and shadows. Runtime stops on hidden tabs, resets the accumulator on visibility changes, clears held keys on blur, and releases GPU/event/audio resources on unmount.
+Scenery uses at most five InstancedMesh batches per chunk, keyed by primitive geometry, with per-instance colors and a shared material. Fog hides streaming boundaries. Graphics presets change draw distance, pixel ratio and shadow resolution. Runtime stops on hidden tabs, resets the accumulator on visibility changes, clears held keys on blur, and releases GPU/event/audio resources on unmount.
 
 Extension points: enrich serializable ChunkData for district-specific props; replace primitive batches with art-directed assets; add station events to simulation; alter environment without coupling physics. V0 has no server or network runtime dependencies.
